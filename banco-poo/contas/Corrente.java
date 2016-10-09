@@ -5,7 +5,7 @@ public class CORRENTE extends CONTA{
 	private float limite;
 	
 	
-	//=========== MÉTODOS ===========//
+	//=========== MÃ‰TODOS ===========//
 	public float getLimite() {
 		return limite;
 	}
