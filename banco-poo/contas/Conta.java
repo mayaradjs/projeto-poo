@@ -6,22 +6,22 @@ public abstract class CONTA {
 	private float saldo;
 	
 	
-	//=========== MÉTODOS ===========//
+	//=========== MÃ‰TODOS ===========//
 	public String transferir(float transf, String conta){
-		//construir condição para realizar a transferência
-		//é preciso conferir a conta que terá o crédito
-		//retornar mensagem de sucesso ou não para a transferência
+		//construir condiÃ§Ã£o para realizar a transferÃªncia
+		//Ã© preciso conferir a conta que terÃ¡ o crÃ©dito
+		//retornar mensagem de sucesso ou nÃ£o para a transferÃªncia
 		return "Saldo Insuficiente.";
-		//return "Transferência realizada com sucesso.";		
+		//return "TransferÃªncia realizada com sucesso.";		
 	}
 	
 	public String saque(float transf, String conta){
-		//construir condição para realizar o saque
-		//é preciso conferir o saldo e limite da conta
-		//retornar mensagem de sucesso ou não e o uso do limite(perguntar se usa ou não o limite) 
+		//construir condiÃ§Ã£o para realizar o saque
+		//Ã© preciso conferir o saldo e limite da conta
+		//retornar mensagem de sucesso ou nÃ£o e o uso do limite(perguntar se usa ou nÃ£o o limite) 
 		return "Saldo Insuficiente.";
 		//return "Saque realizado com sucesso.";
-		//return "Esta operação vai utilizar X do seu limite."
+		//return "Esta operaÃ§Ã£o vai utilizar X do seu limite."
 	}
 	
 	public float getSaldo() {
