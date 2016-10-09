@@ -8,11 +8,11 @@ public abstract class CLIENTE {
 		
 		
 		
-	//=========== MÉTODOS ===========//
+	//=========== MÃ‰TODOS ===========//
 	public CLIENTE(String cNome, String cCPF, String cEndereco){
 		return;
 	}
 	
-	//Cadastrar clientes com nº da conta, nome e saldo. Esse dados ficarão salvos em arquivo txt.
+	//Cadastrar clientes com nÂº da conta, nome e saldo. Esse dados ficarÃ£o salvos em arquivo txt.
 
 }
