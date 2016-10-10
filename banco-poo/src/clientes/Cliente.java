@@ -2,6 +2,8 @@ package clientes;
 
 
 import contas.Conta;
+import java.util.ArrayList;
+import java.util.Arrays;
 
 
 public abstract class Cliente {
@@ -9,18 +11,17 @@ public abstract class Cliente {
 	private String nome;
 	private String telefone;
 	private String endereco;
-	private Conta[] contasDoCliente;
-	//private int codCliente = 0; //TODO Colocar a lógica de id's em quem cria e carrega os clientess
-	
+	private Conta[] contasDoCliente = new Conta[2];
+	private int codCliente; //TODO Colocar a lógica de id's em quem cria e carrega os clientess
 	
 	
 	//Construtor
-	public Cliente(String nome, String telefone, String endereco) {
+	public Cliente( int codCliente, String nome, String telefone, String endereco) {
 		super();
 		this.nome = nome;
 		this.telefone = telefone;
 		this.endereco = endereco;
-		//this.setCodCliente(this.getCodCliente() + 1);
+		this.codCliente = codCliente;
 	}
 
 	

@@ -5,8 +5,8 @@ public class PFisica extends Cliente {
 	private String cpf;
 
 
-	public PFisica(String nome, String telefone, String endereco, String cpf) {
-		super(nome, telefone, endereco);
+	public PFisica(int codCliente, String nome, String telefone, String endereco, String cpf) {
+		super(codCliente, nome, telefone, endereco);
 		this.cpf = cpf;
 	}
 

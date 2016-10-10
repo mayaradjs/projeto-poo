@@ -7,6 +7,7 @@ public abstract class Conta {
 	private String nConta;
 	private float saldo;
 	private Cliente titular;
+	private int tipo; // 0-corrente 1-popupanca
 	
 	//=========== M�TODOS ===========//
 	public String transferir(float transf, Cliente destinatario){
@@ -14,13 +15,13 @@ public abstract class Conta {
 		if (getSaldo() >= transf){
 			this.setSaldo(getSaldo() - transf);
 			//destinatario.contasDoCliente. //TODO depositar saldo no destinatario
+			return "Operação realizada com sucesso!";
 		}else
-			return "Saldo insuficiente"
+			return "Saldo insuficiente";
 		
 		//construir condi��o para realizar a transfer�ncia
 		//� preciso conferir a conta que ter� o cr�dito
 		//retornar mensagem de sucesso ou n�o para a transfer�ncia
-		return "Saldo Insuficiente.";
 		//return "Transfer�ncia realizada com sucesso.";		
 	}
 	
@@ -59,6 +60,14 @@ public abstract class Conta {
 
 	public void setTitular(Cliente titular) {
 		this.titular = titular;
+	}
+
+	public int getTipo() {
+		return tipo;
+	}
+
+	public void setTipo(int tipo) {
+		this.tipo = tipo;
 	}
 	
 
