@@ -65,8 +65,12 @@ public abstract class Cliente {
 		return contasDoCliente;
 	}
 
-	public void setContasDoCliente(Conta[] contasDoCliente) {
-		this.contasDoCliente = contasDoCliente;
+	public Conta getUmaContaDoCliente(int pos) {
+		return contasDoCliente[pos];
+	}
+	
+	public void setContasDoCliente(Conta contasDoCliente, int pos) {
+		this.contasDoCliente[pos] = contasDoCliente;
 	}
 
 
