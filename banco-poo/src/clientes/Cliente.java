@@ -12,7 +12,7 @@ public abstract class Cliente {
 	private String telefone;
 	private String endereco;
 	private Conta[] contasDoCliente = new Conta[2];
-	private int codCliente; //TODO Colocar a lógica de id's em quem cria e carrega os clientess
+	private int codCliente; //TODO Colocar a lógica de id's em quem cria e carrega os clientes
 	
 	
 	//Construtor

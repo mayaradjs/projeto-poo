@@ -9,7 +9,23 @@ public abstract class Conta {
 	private Cliente titular;
 	private int tipo; // 0-corrente 1-popupanca
 	
-	//=========== M�TODOS ===========//
+
+	//=========== Construtores ===========//
+	
+	public Conta(){
+		
+	}
+	
+	public Conta(String nConta, float saldo, Cliente titular, int tipo) {
+		this.nConta = nConta;
+		this.saldo = saldo;
+		this.titular = titular;
+		this.tipo = tipo;
+	}
+	
+	
+	
+	//=========== METODOS ===========//
 	public String transferir(float transf, Cliente destinatario){
 		
 		if (getSaldo() >= transf){
@@ -18,25 +34,28 @@ public abstract class Conta {
 			return "Operação realizada com sucesso!";
 		}else
 			return "Saldo insuficiente";
-		
-		//construir condi��o para realizar a transfer�ncia
-		//� preciso conferir a conta que ter� o cr�dito
-		//retornar mensagem de sucesso ou n�o para a transfer�ncia
-		//return "Transfer�ncia realizada com sucesso.";		
+	
 	}
 	
-	public String saque(float transf, String conta){
-		//construir condi��o para realizar o saque
-		//� preciso conferir o saldo e limite da conta
-		//retornar mensagem de sucesso ou n�o e o uso do limite(perguntar se usa ou n�o o limite) 
-		return "Saldo Insuficiente.";
-		//return "Saque realizado com sucesso.";
-		//return "Esta opera��o vai utilizar X do seu limite."
+
+
+
+	//Metodo Saque sem levar em consideração se há limite ou nao. Apenas quem tem essa opção sao contas correntes
+	public String saque(float valor){
+		
+		
+		if (getSaldo() >= valor){
+			this.setSaldo(getSaldo() - valor);
+			return "Operação realizada com sucesso!";
+		}else
+			return "Saldo insuficiente";
+
 	}
 	
 	public void receberDeposito(float valor){
 		setSaldo(getSaldo()+valor);
 	}
+	
 	
 	public float getSaldo() {
 		return saldo;

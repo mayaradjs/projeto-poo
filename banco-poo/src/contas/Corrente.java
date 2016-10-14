@@ -1,15 +1,57 @@
 package contas;
 
+import java.util.Scanner;
+
+import clientes.Cliente;
+
+
 public class Corrente extends Conta{
+
+
 	//=========== ATRIBUTOS ===========//
 	private float limite;
 	
 	
-//<<<<<<< HEAD:banco-poo/src/contas/Corrente.java
-	//=========== M�TODOS ===========//
-//=======
+	
+	
+
+	//=========== Construtores ===========//
+	
+	public Corrente() {
+
+	}
+
+	public Corrente(String nConta, float saldo, Cliente titular, int tipo, float limite) {
+		super(nConta, saldo, titular, tipo);
+		this.limite = limite;
+
+	}
+
+	
+	
+
 	//=========== MÉTODOS ===========//
-//>>>>>>> cdee08df0b5fce18a9d47c7d42306bda5189ba0c:banco-poo/contas/CORRENTE.java
+
+	public String saque(float valor){
+		
+		
+		if (getSaldo() >= valor){
+			this.setSaldo(getSaldo() - valor);
+			return "Operação realizada com sucesso!";
+		}else if ((getSaldo()+limite) >= valor){
+			System.out.println("Este valor usará seu limite tem certeza que quer continuar? S/N");
+			String resposta = new Scanner(System.in).next(); 
+			if (resposta.equals("S")){
+				this.setSaldo(getSaldo() - valor);
+				return "Operação realizada com sucesso! Seu saldo está negativo";
+			}else{
+				return "Operacao cancelada!";
+			}
+		}else
+			return "Saldo insuficiente";
+
+	}
+	
 
 	public float getLimite() {
 		return limite;

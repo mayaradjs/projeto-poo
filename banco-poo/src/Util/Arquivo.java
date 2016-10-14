@@ -7,7 +7,6 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.util.ArrayList;
 
 
 public class Arquivo  {
@@ -31,9 +30,8 @@ public class Arquivo  {
 		fr = new FileReader(arquivo);
 		br = new BufferedReader(fr);
 
-		if(!arquivo.exists()){
-			arquivo.createNewFile();			
-		}
+		arquivo.createNewFile();			
+		
 		fw.close();
 		bw.close();
 	}
