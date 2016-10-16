@@ -11,17 +11,19 @@ public abstract class Cliente {
 	private String nome;
 	private String telefone;
 	private String endereco;
+	private int tpCliente;
 	private Conta[] contasDoCliente = new Conta[2];
 	private int codCliente; //TODO Colocar a lógica de id's em quem cria e carrega os clientes
 	
 	
 	//Construtor
-	public Cliente( int codCliente, String nome, String telefone, String endereco) {
+	public Cliente( int codCliente, String nome, String telefone, String endereco, int tpCliente) {
 		super();
 		this.nome = nome;
 		this.telefone = telefone;
 		this.endereco = endereco;
 		this.codCliente = codCliente;
+		this.setTpCliente(tpCliente);
 	}
 
 	
@@ -85,6 +87,20 @@ public abstract class Cliente {
 
 	public void setCodCliente(int codCliente) {
 		this.codCliente = codCliente;
+	}
+
+
+
+
+	public int getTpCliente() {
+		return tpCliente;
+	}
+
+
+
+
+	public void setTpCliente(int tpCliente) {
+		this.tpCliente = tpCliente;
 	}
 
 	

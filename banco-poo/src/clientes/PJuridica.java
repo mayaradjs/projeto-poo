@@ -7,7 +7,7 @@ public class PJuridica extends Cliente {
 
 
 	public PJuridica(int codCliente, String nome, String telefone, String endereco, String cnpj) {
-		super(codCliente, nome, telefone, endereco);
+		super(codCliente, nome, telefone, endereco, 1);
 		this.cnpj = cnpj;
 	}
 

@@ -47,6 +47,11 @@ public class Arquivo  {
 		}
 	}
 	
+	public void reCriaArquivo() throws IOException{
+		arquivo.delete();
+		arquivo.createNewFile();
+	}
+	
 	/**
 	 * Retorna o File utilizado no arquivo
 	 * @return File

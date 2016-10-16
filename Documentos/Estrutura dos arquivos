@@ -1,0 +1,13 @@
+1/0 //indica se o cliente está cadastro ativo ou não
+X // X(inteiro) código unico do cadastrado(igual ao numero do arquivo)
+1/0 // X(inteiro) Tipo do cliente
+SSSS //SSSS(String) cpf/cnpj do cliente
+SSSS //SSSS(String) nome do cliente
+SSSS //SSSS(String) telefone do cliente
+SSSS //SSSS(String) endereço do cliente
+--- //Fim do que tinha no cliente e inicio da conta
+X //X(int) tipo da conta (0 - corrente e 1 - poupanca)
+SSSS //SSSS(String) numero da conta do cliente
+X //X(Float) Saldo
+X //X(float) Limite/Juros de poupança
+--- (Caso tenha outra conta, continue com a mesma estruta de cima, senão fim de arquivo após ---)
