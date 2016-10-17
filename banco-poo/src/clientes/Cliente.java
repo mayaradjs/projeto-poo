@@ -13,7 +13,7 @@ public abstract class Cliente {
 	private String endereco;
 	private int tpCliente;
 	private Conta[] contasDoCliente = new Conta[2];
-	private int codCliente; //TODO Colocar a lógica de id's em quem cria e carrega os clientes
+	private int codCliente; 
 	
 	
 	//Construtor

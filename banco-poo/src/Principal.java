@@ -60,11 +60,14 @@ public class Principal {
 								String cpf = new Scanner(System.in).nextLine();
 								nvCliente = new PFisica(contagemCod, nome, tel, end, cpf);
 								contagemCod++;
-							}else{
+							}else if (tpessoa == 0){
 								sop("CNPJ?");
 								String cnpj = new Scanner(System.in).nextLine();
 								nvCliente = new PFisica(contagemCod, nome, tel, end, cnpj);
 								contagemCod++;
+							}else{
+								sop("Opcao inválida");
+								break;
 							}
 							sop("Numero da conta");
 							String nconta = new Scanner(System.in).nextLine();
@@ -88,6 +91,7 @@ public class Principal {
 								listCliente.add(nvCliente);
 								listConta.add(nvConta);
 								sop("Cliente e Conta cadastrados com sucesso");
+								sop("O codigo do cliente eh " + nvCliente.getCodCliente());
 							} catch (Exception e) {
 								sop("Erro - Falha ao salvar no arquivo. Exceção retornado do objeto: "+
 										e.getMessage());
@@ -252,7 +256,7 @@ public class Principal {
 				}
 			}else{
 				sop("Cliente invalido");
-				sop("Deseja tentar novamente? True/False");
+				sop("Deseja tentar novamente? true/false");
 				continuar = new Scanner(System.in).nextBoolean();
 			}
 		}while(continuar);
