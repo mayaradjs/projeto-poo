@@ -25,17 +25,6 @@ public abstract class Cliente {
 		this.codCliente = codCliente;
 		this.setTpCliente(tpCliente);
 	}
-
-	
-	
-	
-//=========== M�TODOS ===========//
-
-
-//Cadastrar clientes com n� da conta, nome e saldo. Esse dados ficar�o salvos em arquivo txt.
-
-
-
 	
 	
 	// Getters and Setters

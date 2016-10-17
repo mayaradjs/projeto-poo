@@ -26,14 +26,14 @@ public abstract class Conta {
 	
 	
 	//=========== METODOS ===========//
-	public String transferir(float transf, Cliente destinatario){
+	public void transferir(float transf, Conta destinatario){
 		
 		if (getSaldo() >= transf){
-			this.setSaldo(getSaldo() - transf);
-			//destinatario.contasDoCliente. //TODO depositar saldo no destinatario
-			return "Operação realizada com sucesso!";
+			this.setSaldo(this.getSaldo()-transf);
+			destinatario.receberDeposito(transf);
+			System.out.println("Operação realizada com sucesso!");
 		}else
-			return "Saldo insuficiente";
+			System.out.println("Saldo insuficiente");
 	
 	}
 	

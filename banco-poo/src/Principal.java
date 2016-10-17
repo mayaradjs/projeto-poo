@@ -8,13 +8,241 @@ import contas.*;
 
 
 public class Principal {
-	static Conta contaLogada;
-	static int contagemCod=0;
-	static Arquivo arq;
+	private Conta contaLogada;
+	Cliente logado;
+	int tipoContaLogada;
+	private static int contagemCod=0;
 	public static ArrayList<Cliente> listCliente = new ArrayList<Cliente>();
 	public static ArrayList<Conta> listConta = new ArrayList<Conta>();
 	
-	public static void CarregarDados() throws IOException,Exception{
+
+	public void start(){
+		Scanner entrada = new Scanner(System.in);
+		
+		try{			
+			CarregarDados();
+		}catch(Exception e){
+			sop("Erro - Falhar ao carregar o dados. Exceção retornada: "
+					+e.getMessage());
+			System.exit(-1);
+		}
+
+		int opcao, op;
+		
+		do{
+			menuPrincipal();
+			opcao = entrada.nextInt();
+			
+			switch (opcao){
+			case 0:
+				break;
+			case 1:
+				do{
+					menuCliente();
+					op = entrada.nextInt();
+					switch (op){
+						case 0:
+							break;
+						case 1:
+							Cliente nvCliente;
+							Conta nvConta;
+							sop("Cadastro de Pessoa"); 
+							sop("Nome?");
+							String nome = new Scanner(System.in).nextLine();
+							sop("Telefone?");
+							String tel = new Scanner(System.in).nextLine();
+							sop("Endereço?");
+							String end = new Scanner(System.in).nextLine();
+							sop("Pessoa 1-Fisica ou  2-Juridica?");
+							int tpessoa = new Scanner(System.in).nextInt();
+							if (tpessoa == 1){
+								sop("CPF?");
+								String cpf = new Scanner(System.in).nextLine();
+								nvCliente = new PFisica(contagemCod, nome, tel, end, cpf);
+								contagemCod++;
+							}else{
+								sop("CNPJ?");
+								String cnpj = new Scanner(System.in).nextLine();
+								nvCliente = new PFisica(contagemCod, nome, tel, end, cnpj);
+								contagemCod++;
+							}
+							sop("Numero da conta");
+							String nconta = new Scanner(System.in).nextLine();
+							sop("Saldo");
+							float saldo = (float)new Scanner(System.in).nextFloat();
+							sop("Qual tipo da conta deseja criar? 0 Corrente - 1 Poupanca");
+							int t = new Scanner(System.in).nextInt();
+							if (t == 1){
+								sop("Informe a taxa de rendimento");
+								float tx = (float)entrada.nextFloat();
+								nvConta = new Poupanca(nconta, saldo, nvCliente, t, tx);
+							}else{
+								sop("Informe o limite");
+								float lm = entrada.nextFloat();
+								nvConta = new Corrente(nconta, saldo, nvCliente, t, lm);
+								
+							}
+							nvCliente.setContasDoCliente(nvConta, t);	
+							try {
+								SalvarClienteArquivo(nvCliente, true);
+								listCliente.add(nvCliente);
+								listConta.add(nvConta);
+								sop("Cliente e Conta cadastrados com sucesso");
+							} catch (Exception e) {
+								sop("Erro - Falha ao salvar no arquivo. Exceção retornado do objeto: "+
+										e.getMessage());
+								contagemCod--;
+							}
+							
+							break;
+						case 2:
+							sop("Opcao 2"); //TODO Implementar para editar um cliente (Isso inclui editar suas informações ou criar mais uma conta)
+							break;
+						case 3:
+							sop("---- Exclusão ----"); 
+							sop("Informe o codigo do cliente que deseja excluir");
+							int codExc = entrada.nextInt();
+							Cliente excluido = getCliente(codExc);
+							if (excluido == null)
+								sop("Cliente inexistente");
+							else{
+								try{
+									SalvarClienteArquivo(excluido, false);
+									sop("Cliente excluido com sucesso!");
+								}catch (Exception e){
+									sop("Erro - Falha ao salvar no arquivo. Exceção retornado do objeto: "+
+											e.getMessage());
+								}
+							}
+							break;
+						default:
+							sop("Opcao Invalida.");
+							break;
+					}
+				}while (op!=0);
+				break;
+				
+			case 2:
+				if (logar()){
+					do{
+						menuConta();
+						op = entrada.nextInt();
+						switch (op){
+							case 0:
+								break;
+							case 1:
+								sop("Informe o numero da conta do destinatário");
+								String codContaDestino = new Scanner(System.in).nextLine();
+								sop("Informe o valor a ser transferido");
+								float valor = new Scanner(System.in).nextFloat();
+								if (getConta(codContaDestino) == null){
+									sop("Conta inexistente");
+									break;
+								}else{
+									Conta contaDestino = getConta(codContaDestino);
+									contaLogada.transferir(valor, contaDestino);
+									try{
+										SalvarClienteArquivo(logado, true);
+										SalvarClienteArquivo(contaDestino.getTitular(), true);
+									}catch(Exception e){
+										sop("Erro - Falha ao salvar no arquivo. Exceção retornado do objeto: "+
+												e.getMessage());
+									}
+								}
+								
+								
+								break;
+							case 2:
+								sop("Informe o valor a ser sacado");
+								valor = entrada.nextFloat();
+								contaLogada.saque(valor);
+								try{
+									SalvarClienteArquivo(logado, true);
+								}catch(Exception e){
+									sop("Erro - Falha ao salvar no arquivo. Exceção retornado do objeto: "+
+											e.getMessage());
+								}
+								break;
+							case 3:
+								sop("Seu saldo é: " + contaLogada.getSaldo());
+								break;
+							default:
+								sop("Opcao Invalida.");
+								break;
+						}
+					}while (op!=0);
+				}
+				break;
+				
+			default:
+				sop("Opcao Invalida.");
+				break;
+			}
+			
+		}while(opcao != 0);
+	}
+	
+	public static void main(String[] args) {
+		new Principal().start();
+	}
+	
+	public void menuPrincipal(){
+		sop("- - - - -  Menu  - - - - - -\n");
+		sop("Escolha um opcao abaixo:");
+		sop("1- Acessar menu do cliente");
+		sop("2- Acessar menu da Conta");
+		sop("0- Encerrar");
+	}
+	
+	public void menuCliente(){
+		sop("- - - - -  Menu  - - - - - -\n");
+		sop("Escolha um opcao abaixo:");
+		sop("1- Cadastrar cliente");
+		sop("2- Editar um cliente");
+		sop("3- Remover cliente");
+		sop("0- Retornar ao menu principal");
+	}
+	
+	public void menuConta(){
+		sop("- - - - -  Menu  - - - - - -\n");
+		sop("Escolha um opcao abaixo:");
+		sop("1- Transferir");
+		sop("2- Sacar");
+		sop("3- Ver saldo");
+		sop("0- Retornar ao menu principal");
+	}
+	
+	public void sop(String msg){
+		System.out.println(msg);
+	}
+	
+	public boolean logar(){
+		boolean continuar;
+		do{
+			sop("Informe o codigo do cliente");
+			int codCliente = new Scanner(System.in).nextInt();
+			logado = getCliente(codCliente);
+			if (!(logado == null)){
+			sop("Informe o tipo da conta que deseja efetuar a transacao. (0 -CC/ 1- Poup)");
+			tipoContaLogada = new Scanner(System.in).nextInt();
+				if(logado.getUmaContaDoCliente(tipoContaLogada) == null){
+					sop("Esse cliente nao possui esse tipo de conta");
+					sop("Por favor, tente novamente");
+					continuar = true;
+				}else{
+					contaLogada = logado.getUmaContaDoCliente(tipoContaLogada);
+					return true;
+				}
+			}else{
+				sop("Cliente invalido");
+				sop("Deseja tentar novamente? True/False");
+				continuar = new Scanner(System.in).nextBoolean();
+			}
+		}while(continuar);
+		return false;
+	}
+	
+	public void CarregarDados() throws IOException,Exception{
 		int index = 0;
 		Arquivo dado; //Classe arquivo para Abstrair leitura/escrita de arquivos
 		
@@ -75,7 +303,7 @@ public class Principal {
 		}
 	}
 
-	public static void SalvarClienteArquivo(Cliente client,boolean contaHabilitada) throws IOException{
+	public void SalvarClienteArquivo(Cliente client,boolean contaHabilitada) throws IOException{
 		Arquivo dado = new Arquivo(String.valueOf(client.getCodCliente())+".mld");
 		dado.reCriaArquivo();
 		if(contaHabilitada)
@@ -112,183 +340,23 @@ public class Principal {
 		}
 	}
 	
-	public static void main(String[] args) {
-		Scanner entrada = new Scanner(System.in);
+	public Cliente getCliente(int codCliente){
+		for(int i=0;i<listCliente.size();i++)
+			if(listCliente.get(i).getCodCliente() == codCliente)
+				return listCliente.get(i);
 		
-		try{			
-			CarregarDados();
-		}catch(Exception e){
-			sop("Erro - Falhar ao carregar o dados. Exceção retornada: "
-					+e.getMessage());
-			System.exit(-1);
-		}
+		return null;
+	}
+	
+	public Conta getConta(String nConta){
+		for(int i=0;i<listConta.size();i++)
+			if(listConta.get(i).getnConta().equals(nConta))
+				return listConta.get(i);
+		
+		return null;
+	}
+	
 
-		int opcao, op;
-		
-		do{
-			menuPrincipal();
-			opcao = entrada.nextInt();
-			
-			switch (opcao){
-			
-			case 1:
-				do{
-					menuCliente();
-					op = entrada.nextInt();
-					switch (op){
-						case 1:
-							Cliente nvCliente;
-							Conta nvConta;
-							sop("Cadastro de Pessoa"); 
-							sop("Nome?");
-							String nome = new Scanner(System.in).nextLine();
-							sop("Telefone?");
-							String tel = new Scanner(System.in).nextLine();
-							sop("Endereço?");
-							String end = new Scanner(System.in).nextLine();
-							sop("Pessoa Fisica ou Juridica?");
-							String tpessoa = new Scanner(System.in).nextLine();
-							if (tpessoa.equals("fisica")){
-								sop("CPF?");
-								String cpf = new Scanner(System.in).nextLine();
-								nvCliente = new PFisica(contagemCod, nome, tel, end, cpf);
-								contagemCod++;
-							}else{
-								sop("CNPJ?");
-								String cnpj = new Scanner(System.in).nextLine();
-								nvCliente = new PFisica(contagemCod, nome, tel, end, cnpj);
-								contagemCod++;
-							}
-							sop("Numero da conta");
-							String nconta = new Scanner(System.in).nextLine();
-							sop("Saldo");
-							float saldo = new Scanner(System.in).nextFloat();
-							sop("Qual tipo da conta deseja criar? 0 Corrente - 1 Poupanca");
-							int t = new Scanner(System.in).nextInt();
-							if (t == 1){
-								sop("Informe a taxa de rendimento");
-								float tx = entrada.nextFloat();
-								nvConta = new Poupanca(nconta, saldo, nvCliente, t, tx);
-							}else{
-								sop("Informe o limite");
-								float lm = entrada.nextFloat();
-								nvConta = new Corrente(nconta, saldo, nvCliente, t, lm);
-								
-							}
-							nvCliente.setContasDoCliente(nvConta, t);	
-							try {
-								SalvarClienteArquivo(nvCliente, true);
-								sop("Cliente e Conta cadastrados com sucesso");
-							} catch (Exception e) {
-								sop("Erro - Falha ao salvar no arquivo. Exceção retornado do objeto: "+
-										e.getMessage());
-								contagemCod--;
-							}
-							
-							break;
-						case 2:
-							sop("Opcao 2"); //TODO Implementar para editar um cliente (Isso inclui editar suas informações ou criar mais uma conta)
-							break;
-						case 3:
-							sop("Exclusão"); //TODO Implementar para remover um cliente
-							sop("Informe o codigo do cliente que deseja excluir");
-							int codExc = entrada.nextInt();
-							//deletar arquivo, caso exista senão exibir msg
-							break;
-						default:
-							sop("Opcao Invalida.");
-							break;
-					}
-				}while (op!=0);
-				break;
-				
-			case 2:		
-				do{
-					logar();
-					menuConta();
-					op = entrada.nextInt();
-					switch (op){
-						case 1:
-							sop("Informe o destinatário");
-							//ler conta de destino
-							sop("Informe o valor a ser transferido");
-							float valor = new Scanner(System.in).nextFloat();
-							//chamar metodo de transferencia
-							break;
-						case 2:
-							sop("Informe o valor a ser sacado");
-							valor = entrada.nextFloat();
-							contaLogada.saque(valor);
-							break;
-						case 3:
-							sop("Seu saldo é: " + contaLogada.getSaldo());
-							break;
-						default:
-							sop("Opcao Invalida.");
-							break;
-					}
-				}while (op!=0);
-				break;
-				
-			default:
-				sop("Opcao Invalida.");
-				break;
-			}
-			
-		}while(opcao != 0);
-	}
-	
-	public static void menuPrincipal(){
-		sop("- - - - -  Menu  - - - - - -\n");
-		sop("Escolha um opcao abaixo:");
-		sop("1- Acessar menu do cliente");
-		sop("2- Acessar menu da Conta");
-		sop("0- Encerrar");
-	}
-	
-	public static void menuCliente(){
-		sop("- - - - -  Menu  - - - - - -\n");
-		sop("Escolha um opcao abaixo:");
-		sop("1- Cadastrar cliente");
-		sop("2- Editar um cliente");
-		sop("3- Remover cliente");
-		sop("0- Retornar ao menu principal");
-	}
-	
-	public static void menuConta(){
-		sop("- - - - -  Menu  - - - - - -\n");
-		sop("Escolha um opcao abaixo:");
-		sop("1- Transferir");
-		sop("2- Sacar");
-		sop("3- Ver saldo");
-		sop("0- Retornar ao menu principal");
-	}
-	
-	public static void sop(String msg){
-		System.out.println(msg);
-	}
-	
-	public static void logar(){
-		boolean continuar;
-		do{
-			sop("Informe o codigo do cliente");
-			//ler entrada
-			sop("Informe o tipo da conta que deseja efetuar a transacao. (0 -CC/ 1- Poup)");
-			int tipo = new Scanner(System.in).nextInt();
-			if (tipo == 1){
-				contaLogada = new Poupanca();
-			}else{
-				contaLogada = new Corrente();
-			}
-			if (2==2){//Se existe cliente com esse codigo
-				continuar = false;
-			}else{
-				sop("Deseja tentar novamente? True/False");
-				continuar = new Scanner(System.in).nextBoolean();
-			}
-			//Validar as informações recebidas antes de continuar
-		}while(continuar);
-	}
 	
 
 }
