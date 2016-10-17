@@ -95,10 +95,8 @@ public class Principal {
 							}
 							
 							break;
+							
 						case 2:
-							sop("Opcao 2"); //TODO Implementar para editar um cliente (Isso inclui editar suas informações ou criar mais uma conta)
-							break;
-						case 3:
 							sop("---- Exclusão ----"); 
 							sop("Informe o codigo do cliente que deseja excluir");
 							int codExc = entrada.nextInt();
@@ -173,7 +171,26 @@ public class Principal {
 					}while (op!=0);
 				}
 				break;
-				
+			case 3:
+				sop("Informe o numero da conta em que deseja depositar");
+				String codContaDestino = new Scanner(System.in).nextLine();
+				sop("Informe o valor a ser depositado");
+				float valor = new Scanner(System.in).nextFloat();
+				if (getConta(codContaDestino) == null){
+					sop("Conta inexistente");
+					break;
+				}else{
+					Conta contaDestino = getConta(codContaDestino);
+					contaDestino.receberDeposito(valor);
+					sop("Deposito realizado com sucesso");
+					try{
+						SalvarClienteArquivo(contaDestino.getTitular(), true);
+					}catch(Exception e){
+						sop("Erro - Falha ao salvar no arquivo. Exceção retornado do objeto: "+
+								e.getMessage());
+					}
+				}
+				break;
 			default:
 				sop("Opcao Invalida.");
 				break;
@@ -191,6 +208,7 @@ public class Principal {
 		sop("Escolha um opcao abaixo:");
 		sop("1- Acessar menu do cliente");
 		sop("2- Acessar menu da Conta");
+		sop("3- Fazer deposito");
 		sop("0- Encerrar");
 	}
 	
@@ -198,8 +216,7 @@ public class Principal {
 		sop("- - - - -  Menu  - - - - - -\n");
 		sop("Escolha um opcao abaixo:");
 		sop("1- Cadastrar cliente");
-		sop("2- Editar um cliente");
-		sop("3- Remover cliente");
+		sop("2- Remover cliente");
 		sop("0- Retornar ao menu principal");
 	}
 	
